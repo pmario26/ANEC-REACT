@@ -6,7 +6,6 @@ import FormControl from '@material-ui/core/FormControl';
 
 const ButtonA = () => (
   <Button variant="contained" color="primary">
-    Hello World
   </Button>
 );
 
@@ -15,7 +14,7 @@ class App extends React.Component{
     return (
       <div className="App" >     
         <Button variant="contained" color="primary" onClick={() => this.props.nextQuestion()}>
-              Hello World
+              {this.props.text}
         </Button>
       </div>
     );
