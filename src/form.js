@@ -7,7 +7,7 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
-
+import Stepper from './stepper'
 import Button from './App';
 
 
@@ -108,6 +108,7 @@ class RadioButtonsGroup extends React.Component {
 
     return (
       <div className={classes.root}>
+        <Stepper display='inline'/>
         {!this.state.isHidden && <FormControl component="fieldset" className={classes.formControl}>
           <FormLabel component="legend">{this.state.questions[this.state.count].title}</FormLabel>
           <RadioGroup
