@@ -7,8 +7,13 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
-import Stepper from './stepper'
 import Button from './App';
+import Step from '@material-ui/core/Step';
+import StepLabel from '@material-ui/core/StepLabel';
+import Stepper from '@material-ui/core/Stepper';
+
+
+
 
 
 const questions = [
@@ -35,6 +40,8 @@ const questions2 = [
 
 let count = 0;
 let score = 0;
+
+const steps = ['EQM forma A', 'EQM forma B', 'END']
 
 const styles = theme => ({
   root: {
@@ -108,7 +115,17 @@ class RadioButtonsGroup extends React.Component {
 
     return (
       <div className={classes.root}>
-        <Stepper display='inline'/>
+        <Stepper activeStep={0}>
+        {steps.map((label, index) => {
+          const stepProps = {};
+          const labelProps = {};          
+          return (
+            <Step key={label} {...stepProps}>
+              <StepLabel {...labelProps}>{label}</StepLabel>
+            </Step>
+          );
+        })}
+      </Stepper>
         {!this.state.isHidden && <FormControl component="fieldset" className={classes.formControl}>
           <FormLabel component="legend">{this.state.questions[this.state.count].title}</FormLabel>
           <RadioGroup

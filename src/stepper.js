@@ -10,7 +10,7 @@ import { withTheme } from '@material-ui/core/styles';
 
 
 function getSteps() {
-  return ['Select campaign settings', 'Create an ad group', 'Create an ad'];
+  return ['EQM forma A', 'EQM forma B', 'END'];
 }
 
 function getStepContent(step) {
