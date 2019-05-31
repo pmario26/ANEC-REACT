@@ -16,8 +16,8 @@ import Stepper from '@material-ui/core/Stepper';
 
 
 
-const questions = [
-  { title: 'P1. Você tem problema de memória (ou de esquecimento)?', q1: 'Não', q2: 'Não Sabe responder', q3: 'Sim' },
+let questions = [
+  {title: 'P1. Você tem problema de memória (ou de esquecimento)?', q1: 'Não', q2: 'Não Sabe responder', q3: 'Sim' },
   { title: 'P2. Com que frequencia esse problema acontece?', q1: 'Raramente/Nunca', q2: 'Pouco/Mais ou menos', q3: 'Muito/Frequente' },
   { title: 'P3. Esse problema de memoria tem atrapalhado suas atividades no dia-a-da?', q1: 'Não', q2: 'Pouco/mais ou menos', q3: 'Muito/frequente' },
   { title: 'P4. Como esta sua memória em comparação com outras pessoas de sua idade?', q1: 'Igual ou melhor', q2: 'Um pouco pior', q3: 'Muito pior' },
@@ -27,14 +27,25 @@ const questions = [
 
 ];
 
+ questions = [
+  ['P1. Você tem problema de memória (ou de esquecimento)?', 'Não', 'Não Sabe responder','Sim' ],
+  ['P2. Com que frequencia esse problema acontece?', 'Raramente/Nunca', 'Pouco/Mais ou menos', 'Muito/Frequente' ],
+  ['P3. Esse problema de memoria tem atrapalhado suas atividades no dia-a-da?',  'Não',  'Pouco/mais ou menos',  'Muito/frequente' ],
+  ['P4. Como esta sua memória em comparação com outras pessoas de sua idade?',  'Igual ou melhor',  'Um pouco pior',  'Muito pior' ],
+  ['P5. Como esta sua memória em comparação a quando voce era mais jovem ?',  'Igual ou melhor',  'Um pouco pior',  'Muito pior' ],
+  ['P6. Acontece de você esquecer o que acabou de ler ou de ouvir?',  'Raramente/Nunca',  'De vez em quando',  'Frequentemente' ],
+  ['P7. De uma nota de 1 a 10 para sua memória: ',  '9 ou 10',  '5 a 8',  '1 a 4' ]
+ 
+];
+
 const questions2 = [
-  { title: 'P1. Ele(a) tem problema de memória (ou de esquecimento)?', q1: 'Não', q2: 'Não Sabe responder', q3: 'Sim' },
-  { title: 'P2. Com que frequencia esse problema acontece?', q1: 'Raramente/Nunca', q2: 'Pouco/Mais ou menos', q3: 'Muito/Frequente' },
-  { title: 'P3. Esse problema de memoria tem atrapalhado atividades dele(a) no dia-a-da?', q1: 'Não', q2: 'Pouco/mais ou menos', q3: 'Muito/frequente' },
-  { title: 'P4. Como esta a memória dele(a) em comparação com outras pessoas de sua idade?', q1: 'Igual ou melhor', q2: 'Um pouco pior', q3: 'Muito pior' },
-  { title: 'P5. Como esta a memória dele(a) em comparação a quando era mais jovem ?', q1: 'Igual ou melhor', q2: 'Um pouco pior', q3: 'Muito pior' },
-  { title: 'P6. Acontece de ele(a) esquecer o que acabou de ler ou de ouvir?', q1: 'Raramente/Nunca', q2: 'De vez em quando', q3: 'Frequentemente' },
-  { title: 'P7. De uma nota de 1 a 10 para a memória dele(a): ', q1: '9 ou 10', q2: '5 a 8', q3: '1 a 4' }
+  ['P1. Ele(a) tem problema de memória (ou de esquecimento)?',  'Não',  'Não Sabe responder',  'Sim' ],
+  ['P2. Com que frequencia esse problema acontece?',  'Raramente/Nunca',  'Pouco/Mais ou menos',  'Muito/Frequente' ],
+  ['P3. Esse problema de memoria tem atrapalhado atividades dele(a) no dia-a-da?', 'Não', 'Pouco/mais ou menos',  'Muito/frequente' ],
+  ['P4. Como esta a memória dele(a) em comparação com outras pessoas de sua idade?',  'Igual ou melhor',  'Um pouco pior',  'Muito pior' ],
+  ['P5. Como esta a memória dele(a) em comparação a quando era mais jovem ?', 'Igual ou melhor', 'Um pouco pior',  'Muito pior' ],
+  ['P6. Acontece de ele(a) esquecer o que acabou de ler ou de ouvir?', 'Raramente/Nunca',  'De vez em quando',  'Frequentemente'],
+  ['P7. De uma nota de 1 a 10 para a memória dele(a): ', '9 ou 10',  '5 a 8', '1 a 4' ]
 
 ];
 
@@ -68,7 +79,9 @@ class RadioButtonsGroup extends React.Component {
       count: 0,
       questions,
       score: 0,
-      isHidden: false
+      isHidden: false,
+      activeStep:0
+
     }
 
   }
@@ -103,7 +116,8 @@ class RadioButtonsGroup extends React.Component {
     if(this.state.count === 0 && this.state.isHidden){
       this.setState((state, props) => ({
         questions: questions2,
-        isHidden: false
+        isHidden: false,
+        activeStep: state.activeStep + 1
 
       }));
     }
@@ -112,10 +126,16 @@ class RadioButtonsGroup extends React.Component {
   };
   render() {
     const { classes } = this.props;
+    var myList = this.state.questions[this.state.count].map((row,index)=>{
+      if(index > 0)
+        return (
+          <FormControlLabel value={`${index}`} control={<Radio id={`value${index}`} color="primary" />} label={row} />
+          )
+    });
 
     return (
       <div className={classes.root}>
-        <Stepper activeStep={0}>
+        <Stepper activeStep={this.state.activeStep}>
         {steps.map((label, index) => {
           const stepProps = {};
           const labelProps = {};          
@@ -127,7 +147,7 @@ class RadioButtonsGroup extends React.Component {
         })}
       </Stepper>
         {!this.state.isHidden && <FormControl component="fieldset" className={classes.formControl}>
-          <FormLabel component="legend">{this.state.questions[this.state.count].title}</FormLabel>
+          <FormLabel component="legend">{this.state.questions[this.state.count][0]}</FormLabel>
           <RadioGroup
             aria-label="Gender"
             name="gender1"
@@ -135,11 +155,7 @@ class RadioButtonsGroup extends React.Component {
             value={this.state.value}
             onChange={this.handleChange}
           >
-            <FormControlLabel value={'0'} control={<Radio id='value1' color="primary" />} label={this.state.questions[this.state.count].q1} />
-            <FormControlLabel value={'1'} control={<Radio id='value2' color="primary" />} label={this.state.questions[this.state.count].q2} />
-            <FormControlLabel value={'2'} control={<Radio id='value3' color="primary" />} label={this.state.questions[this.state.count].q3} />
-
-
+            {myList}
           </RadioGroup>
           <Button nextQuestion={this.nextQuestion.bind(this)} text='Avançar' />
         </FormControl>}
@@ -150,11 +166,6 @@ class RadioButtonsGroup extends React.Component {
 
           </div>
         }
-
-
-
-
-
       </div>
     );
   }
