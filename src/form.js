@@ -13,21 +13,7 @@ import StepLabel from '@material-ui/core/StepLabel';
 import Stepper from '@material-ui/core/Stepper';
 
 
-
-
-
-let questions = [
-  {title: 'P1. Você tem problema de memória (ou de esquecimento)?', q1: 'Não', q2: 'Não Sabe responder', q3: 'Sim' },
-  { title: 'P2. Com que frequencia esse problema acontece?', q1: 'Raramente/Nunca', q2: 'Pouco/Mais ou menos', q3: 'Muito/Frequente' },
-  { title: 'P3. Esse problema de memoria tem atrapalhado suas atividades no dia-a-da?', q1: 'Não', q2: 'Pouco/mais ou menos', q3: 'Muito/frequente' },
-  { title: 'P4. Como esta sua memória em comparação com outras pessoas de sua idade?', q1: 'Igual ou melhor', q2: 'Um pouco pior', q3: 'Muito pior' },
-  { title: 'P5. Como esta sua memória em comparação a quando voce era mais jovem ?', q1: 'Igual ou melhor', q2: 'Um pouco pior', q3: 'Muito pior' },
-  { title: 'P6. Acontece de você esquecer o que acabou de ler ou de ouvir?', q1: 'Raramente/Nunca', q2: 'De vez em quando', q3: 'Frequentemente' },
-  { title: 'P7. De uma nota de 1 a 10 para sua memória: ', q1: '9 ou 10', q2: '5 a 8', q3: '1 a 4' }
-
-];
-
- questions = [
+ const q0 = [
   ['P1. Você tem problema de memória (ou de esquecimento)?', 'Não', 'Não Sabe responder','Sim' ],
   ['P2. Com que frequencia esse problema acontece?', 'Raramente/Nunca', 'Pouco/Mais ou menos', 'Muito/Frequente' ],
   ['P3. Esse problema de memoria tem atrapalhado suas atividades no dia-a-da?',  'Não',  'Pouco/mais ou menos',  'Muito/frequente' ],
@@ -38,7 +24,7 @@ let questions = [
  
 ];
 
-const questions2 = [
+const q1 = [
   ['P1. Ele(a) tem problema de memória (ou de esquecimento)?',  'Não',  'Não Sabe responder',  'Sim' ],
   ['P2. Com que frequencia esse problema acontece?',  'Raramente/Nunca',  'Pouco/Mais ou menos',  'Muito/Frequente' ],
   ['P3. Esse problema de memoria tem atrapalhado atividades dele(a) no dia-a-da?', 'Não', 'Pouco/mais ou menos',  'Muito/frequente' ],
@@ -49,10 +35,45 @@ const questions2 = [
 
 ];
 
+const q2 = [
+  ['A Eu me sinto tenso ou contraido','Nunca','De vez em quando','Boa parte do tempo','A maior parte do tempo'],
+  ['D Ainda gosto das mesmas coisas de antes','Já não sinto prazer em nada','Só um pouco','Não tanto quanto antes','Sim,do mesmo jeito de antes'],
+  ['A Eu sinto uma espécie de medo, como se alguma coisa ruim fosse acontecer','Não sinto nada disso','Um pouco, mas isso não me preocupa','Sim, mas não tão forte','Sim, e de um jeito muito forte'],
+  ['D Dou risada e me divirto quando vejo coisas engraçadas','Do mesmo jeito que antes','Atualmente um pouco menos','Atualmente bem menos','Não consigo mais'],
+  ['A estou com a cabeça cheia de preocupaçãoes','Raramente','De vez em quando','Boa parte do tempo','A maior parte do tempo'],
+  ['D Eu me sinto alegre','A maior parte do tempo','Muitas vezes','Poucas vezes','Nunca'],
+  ['A Consigo ficar a vontade e me sentir relaxado:','Nunca','Poucas vezes','Muitas vezes','Sim quase sempre'],
+  ['D Eu estou lento para pensar e fazer as coisas','Nunca','De vez em quando','Muitas vezes','Quase sempre'],
+  ['A Eu tenho uma sensação ruim de medo, como um frio na barriga ou um aperto no estômago:','Nunca','De vez em quando','Muitas vezes','Quase sempre'],
+  ['D Eu perdi interesse em cuidar da minha aparência','Me cuido do mesmo jeito que antes','Talvez não tanto quanto antes','Não estou mais me cuidando como deveria','Completamente'],
+  ['A Eu me sinto inquieto, como se eu não pudesse ficar parado em lugar nenhum:','Não me sinto assim','Um pouco','Bastante','Sim,demais'],
+  ['D Fico esperando desanimado as coisas que estão por vir','Do mesmo jeito que antes','Um pouco menos que antes','Bem menos do que antes','Quase nunca'],
+  ['A De repente, tenho a sensação de entrar em pânico:','Não sinto isso','De vez em quando','Várias vezes','A quase todo momento'],
+  ['D Consigo sentir prazer quando assisto um bom programa de televisão,de rádio, ou quando leio alguma coisa:','Quase sempre','Várias vezes','Poucas vezes','Quase Nunca']
+];
+
+const q3 = [
+  ['Quantidade de automóveis de passeio exclusivamente para uso particular','Não Possui','1','2','3','4+'],
+  ['Quantidade de empregados mensalistas,considerando apenas os que trabalham cinco dias por semana','Não Possui','1','2','3','4+'],
+  ['Quantidade de máquinas de lavar roupa, excluindo tanquinho','Não Possui','1','2','3','4+'],
+  ['Quantidade de banheiros','Não Possui','1','2','3','4+'],
+  ['DVD,incluindo qualquer dispositivo que leia DVD e desconsiderando DVD de automóvel','Não Possui','1','2','3','4+'],
+  ['Quantidade de geladeiras','Não Possui','1','2','3','4+'],
+  ['Quantidade de freezers independentes ou partes da geladeira duplex','Não Possui','1','2','3','4+'],
+  ['Quantidade de microcomputadores,considerando computadores de mesa, laptops, notebooks e netbooks e desconsiderando tablets,palms ou smartphones','Não Possui','1','2','3','4+'],
+  ['Quantidade de lavadora de louças','Não Possui','1','2','3','4+'],
+  ['Quantidade de forno de micro-ondas','Não Possui','1','2','3','4+'],
+  ['Quantidade de motocicletas, desconsiderando as usadas exclusivamente para uso profissional','Não Possui','1','2','3','4+'],
+  ['Quantidade de máquinas secadoras de roupas,considerando lava e seca','Não Possui','1','2','3','4+'],
+  ['A água utilizada neste domicílio é proveniente de?','Rede geral de distribuição','Poço ou nascente','Outro meio'],
+  ['Considerando o trecho da rua do seu domicílio, você diria que a rua é:','Asfaltada/Pavimentada','Terra/Cascalho']
+]
+
 let count = 0;
 let score = 0;
+let qRender = [q0,q1,q2,q3]
 
-const steps = ['EQM forma A', 'EQM forma B', 'END']
+const steps = ['EQM forma A', 'EQM forma B','HADS','ICS', 'END', 'END', 'END', 'END', 'END']
 
 const styles = theme => ({
   root: {
@@ -77,7 +98,7 @@ class RadioButtonsGroup extends React.Component {
     super(props);
     this.state = {
       count: 0,
-      questions,
+      questions: qRender[0],
       score: 0,
       isHidden: false,
       activeStep:0
@@ -100,13 +121,13 @@ class RadioButtonsGroup extends React.Component {
     if (document.getElementById("value3").checked)
       temp = 2;}
 
-    if (this.state.count < 6  && !this.state.isHidden) {
+    if (this.state.count < (this.state.questions.length - 1)  && !this.state.isHidden) {
       this.setState((state, props) => ({
         score: state.score + temp,
         count: state.count + 1
       }));
     }
-    if (this.state.count == 6) {
+    if (this.state.count == (this.state.questions.length - 1)) {
       this.setState((state, props) => ({
         count: 0,
         isHidden: true
@@ -115,7 +136,7 @@ class RadioButtonsGroup extends React.Component {
     }
     if(this.state.count === 0 && this.state.isHidden){
       this.setState((state, props) => ({
-        questions: questions2,
+        questions: qRender[state.activeStep + 1],
         isHidden: false,
         activeStep: state.activeStep + 1
 
@@ -129,7 +150,7 @@ class RadioButtonsGroup extends React.Component {
     var myList = this.state.questions[this.state.count].map((row,index)=>{
       if(index > 0)
         return (
-          <FormControlLabel value={`${index}`} control={<Radio id={`value${index}`} color="primary" />} label={row} />
+          <FormControlLabel className='radioS' value={`${index}`} control={<Radio id={`value${index}`} color="primary" />} label={row} />
           )
     });
 
@@ -146,7 +167,7 @@ class RadioButtonsGroup extends React.Component {
           );
         })}
       </Stepper>
-        {!this.state.isHidden && <FormControl component="fieldset" className={classes.formControl}>
+        {!this.state.isHidden && <FormControl component="fieldset" className='form'>
           <FormLabel component="legend">{this.state.questions[this.state.count][0]}</FormLabel>
           <RadioGroup
             aria-label="Gender"

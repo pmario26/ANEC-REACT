@@ -12,8 +12,8 @@ const ButtonA = () => (
 class App extends React.Component{
   render(){
     return (
-      <div className="App" >     
-        <Button variant="contained" color="primary" onClick={() => this.props.nextQuestion()}>
+      <div className="buttonWrapper" >     
+        <Button className='sendButton' variant="contained" color="primary" onClick={() => this.props.nextQuestion()}>
               {this.props.text}
         </Button>
       </div>

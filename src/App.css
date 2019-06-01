@@ -1,6 +1,22 @@
-.App {
+#here{
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+  padding: 40px;
+  width: 95%;
+  min-width: 300px;
+}
+.buttonWrapper {
   text-align: center;
 }
 .option{
   display: flex;
+  width: 100%;
+}
+.radioS{  
+justify-content: flex-start;
+
+}
+.form{
+  align-self: center;
 }
