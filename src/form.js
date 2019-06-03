@@ -73,7 +73,7 @@ let count = 0;
 let score = 0;
 let qRender = [q0,q1,q2,q3]
 
-const steps = ['EQM forma A', 'EQM forma B','HADS','ICS', 'END', 'END', 'END', 'END', 'END']
+const steps = ['EQM forma A', 'EQM forma B','HADS','ICS', 'END']
 
 const styles = theme => ({
   root: {
@@ -155,7 +155,7 @@ class RadioButtonsGroup extends React.Component {
     });
 
     return (
-      <div className={classes.root}>
+      <div className='outer'>
         <Stepper activeStep={this.state.activeStep}>
         {steps.map((label, index) => {
           const stepProps = {};
