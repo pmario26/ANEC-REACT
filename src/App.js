@@ -12,7 +12,7 @@ const ButtonA = () => (
 class App extends React.Component{
   render(){
     return (
-      <div className="buttonWrapper" >     
+      <div  >     
         <Button className='sendButton' variant="contained" color="primary" onClick={() => this.props.nextQuestion()}>
               {this.props.text}
         </Button>
