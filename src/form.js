@@ -69,15 +69,28 @@ const q3 = [
   ['INSTRUMENTAL DE CLASSIFICAÇÃO SOCIOECONÔMICA','','Considerando o trecho da rua do seu domicílio, você diria que a rua é:','Asfaltada/Pavimentada','Terra/Cascalho']
 ]
 
-const q4 = [
-  ['Em geral, comparando com outras pessoas da sua idade, você diria que sua memória é :','Ruim','Regular','Boa','Muito Boa','Excelente']
+const qInf = ['Curvar-se, agachar-se ou ajoelhar-se?',
+              'Levantar ou carregar objetos com peso aproximado de 5 quilos?',
+              'Elevar ou estender os braços acima do ombro?',
+              'Escrever ou manusear e segurar pequenos objetos?',
+              'Andar 400 metros (aproximadamente 4 quarteirões) ?',
+              'Fazer serviço doméstico pesado como esfregar o chão ou limpar janelas ?',
+ 
+]
+
+const qInf2 = [
+  ['Fazer compras de itens pessoais( como produtos de higiene pessoal ou medicamentos)?','Não faço compras'],
+  ['Lidar com dinheiro (como controlar suas desposas ou pagar contas?','Não lido com dinheiro'],
+  ['Atravessar o quarto andando (permitido o uso de bengala ou andador)?','Não ando'],
+  ['Realizar tarefas domésticas leves(como lavar louça ou fazer limpeza leve','Não faço tarefas domésticas leves'],
+  ['Tomar banho de chuveiro ou de banheira?','Não tomo banho de chuveiro ou banheira']
 ]
 
 let count = 0;
 let score = 0;
 let qRender = [q0,q1,q2,q3]
 
-const steps = ['EQM forma A', 'EQM forma B','HADS','ICS', 'END']
+const steps = ['EQM forma A', 'EQM forma B','HADS','ICS','VES-13', 'END']
 
 const styles = theme => ({
   root: {
@@ -91,9 +104,6 @@ const styles = theme => ({
   },
 });
 
-function next() {
-  console.log('hi')
-}
 
 class RadioButtonsGroup extends React.Component {
 
@@ -107,7 +117,11 @@ class RadioButtonsGroup extends React.Component {
       isHidden: false,
       activeStep:0,
       specialTest: false,
-      age : 23
+      specialState: 0,
+      specialQuestions: qInf,
+      lastQuestions: qInf2,
+      specialCount:0,
+      lastCount:0
 
     }
 
@@ -117,11 +131,11 @@ class RadioButtonsGroup extends React.Component {
   handleChange = event => {
     this.setState({ value: event.target.value });
   };
-  nextQuestion() {
-    console.log(this.state)
+  nextQuestion() {   
     var temp = 0;
     
-    if(!this.state.isHidden){
+    if(!this.state.isHidden && !this.state.specialTest ){
+      
     if (document.getElementById("value3").checked)
       temp = 1;
     if (document.getElementById("value4").checked)
@@ -150,7 +164,8 @@ class RadioButtonsGroup extends React.Component {
       }));
       else{
         this.setState((state, props) => ({         
-          activeStep: 4
+          activeStep: 4,
+          specialTest: true
   
         }));
       }
@@ -158,6 +173,39 @@ class RadioButtonsGroup extends React.Component {
       
     
   };
+
+  surveyNext(){
+    if(this.state.specialState === 2){
+      this.setState((state, props) => ({
+        specialCount: state.specialCount + 1  
+      }));
+      if(this.state.specialCount !== 5)
+      return;
+    }
+    if(this.state.specialState === 3){
+      this.setState((state, props) => ({
+        lastCount: state.lastCount + 1  
+      }));
+      if(this.state.lastCount !== 4)
+      return;
+      this.setState((state, props) => ({         
+        activeStep: 5
+
+      }));   
+      
+
+    }
+
+    this.setState((state, props) => ({
+      specialState: state.specialState + 1
+
+    }));
+  }
+  restart(){
+    setTimeout(() => {
+      window.location.reload(false); 
+    }, 100);
+  }
   render() {
     const { classes } = this.props;
     var myList = this.state.questions[this.state.count].map((row,index)=>{
@@ -166,7 +214,7 @@ class RadioButtonsGroup extends React.Component {
           <FormControlLabel className='radioS' value={`${index}`} control={<Radio id={`value${index}`} color="primary" />} label={row} />
           )
     });
-
+    var vList;
     return (
       <div className='outer'>
         <div className='stepper'>
@@ -184,7 +232,7 @@ class RadioButtonsGroup extends React.Component {
       </div>
         {!this.state.isHidden && !this.state.specialTest && 
         <div className="matter">
-          <h1>{this.state.questions[this.state.count][0]}</h1>
+          <h2>{this.state.questions[this.state.count][0]}</h2>
           <h4>{this.state.questions[this.state.count][1]}</h4>
         <FormControl component="fieldset" className='form'>
           <FormLabel id='title01' component="legend">{this.state.questions[this.state.count][2]}</FormLabel>
@@ -208,12 +256,90 @@ class RadioButtonsGroup extends React.Component {
             </div>
           </div>
         }
-        {this.state.specialTest && <div>
-          Age:<input type='text' name='age'/><br></br>
-          <Button nextQuestion={this.nextQuestion.bind(this)} text='Avançar' />
-
-
+        {this.state.specialTest && <div className='matter'>
+          <h2>Vulnerable Elders Survey-13 (VES-13)</h2>
+          {this.state.specialState === 0 && <div>
+            <div className='ageContainer'>
+          Idade:<input type='number' name='age'/>
+          </div>
+          <Button nextQuestion={this.surveyNext.bind(this)} text='Avançar' />
           </div>}
+          {this.state.specialState === 1 && <div>
+             <FormControl component="fieldset" className='form'>
+             <FormLabel id='title01' component="legend">{'Em geral,comparado com outras pessoas da sua idade,você diria que sua memória é:'}</FormLabel>
+             
+             <RadioGroup
+               aria-label="Gender"
+               name="gender1"
+               className={classes.group}
+               value={this.state.value}
+               onChange={this.handleChange}
+             >
+               <FormControlLabel className='radioS' value={`${1}`} control={<Radio id={`value${1}`} color="primary" />} label={'Ruim'} />
+               <FormControlLabel className='radioS' value={`${2}`} control={<Radio id={`value${2}`} color="primary" />} label={'Regular'} />
+               <FormControlLabel className='radioS' value={`${3}`} control={<Radio id={`value${3}`} color="primary" />} label={'Boa'} />
+               <FormControlLabel className='radioS' value={`${4}`} control={<Radio id={`value${3}`} color="primary" />} label={'Muito Boa'} />
+               <FormControlLabel className='radioS' value={`${5}`} control={<Radio id={`value${3}`} color="primary" />} label={'Excelente'} />
+
+
+             </RadioGroup>
+             <Button nextQuestion={this.surveyNext.bind(this)} text='Avançar' />
+           </FormControl>
+           </div>
+          }
+          {this.state.specialState === 2 && <div>
+            <h4>{'Em média, quanta dificuldade você tem para fazer as seguintes atividades físicas:'}</h4>
+            <FormControl component="fieldset" className='form'>              
+             <FormLabel id='title01' component="legend">{this.state.specialQuestions[this.state.specialCount]}</FormLabel>
+             
+             <RadioGroup
+               aria-label="Gender"
+               name="gender1"
+               className={classes.group}
+               value={this.state.value}
+               onChange={this.handleChange}
+             >
+
+              <FormControlLabel className='radioS' value={`${1}`} control={<Radio id={`value${1}`} color="primary" />} label={'Nenhuma dificuldade'} />
+               <FormControlLabel className='radioS' value={`${2}`} control={<Radio id={`value${2}`} color="primary" />} label={'Pouca dificuldade'} />
+               <FormControlLabel className='radioS' value={`${3}`} control={<Radio id={`value${3}`} color="primary" />} label={'Média dificuldade '} />
+               <FormControlLabel className='radioS' value={`${4}`} control={<Radio id={`value${3}`} color="primary" />} label={'Muita dificuldade'} />
+               <FormControlLabel className='radioS' value={`${5}`} control={<Radio id={`value${3}`} color="primary" />} label={'Incapaz de fazer'} />
+               </RadioGroup>
+             <Button nextQuestion={this.surveyNext.bind(this)} text='Avançar' />
+           </FormControl>
+            </div>
+            
+          }
+          {
+            this.state.specialState === 3 && <div>
+              <h4>{'Por causa da sua saude ou condição física,você tem alguma dificuldade para:'}</h4>
+            <FormControl component="fieldset" className='form'>              
+             <FormLabel id='title01' component="legend">{this.state.lastQuestions[this.state.lastCount][0]}</FormLabel>
+             
+             <RadioGroup
+               aria-label="Gender"
+               name="gender1"
+               className={classes.group}
+               value={this.state.value}
+               onChange={this.handleChange}
+             >
+
+              <FormControlLabel className='radioS' value={`${1}`} control={<Radio id={`value${1}`} color="primary" />} label={'Sim'} />
+               <FormControlLabel className='radioS' value={`${2}`} control={<Radio id={`value${2}`} color="primary" />} label={'Não'} />
+               <FormControlLabel className='radioS' value={`${3}`} control={<Radio id={`value${2}`} color="primary" />} label={this.state.lastQuestions[this.state.lastCount][1]} />
+               
+               </RadioGroup>
+             <Button nextQuestion={this.surveyNext.bind(this)} text='Avançar' />
+           </FormControl>
+
+            </div>
+          }
+          {
+            this.state.specialState === 4 && <Button nextQuestion={this.restart.bind(this)} text='Reiniciar' />
+          }
+          </div>        
+        }
       </div>
     );
   }
